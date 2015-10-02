@@ -1,7 +1,7 @@
 #!/bin/bash
 
 host_document_root="/home/vagrant"
-apache_document_root="/var/www/html"
+apache_document_root="/var/www"
 apache_config_file="/etc/apache2/apache2.conf"
 project_folder_name='public'
 
@@ -15,7 +15,7 @@ echo "Start install"
 sudo apt-get update
 
 echo "Base package install"
-sudo apt-get -y install curl git mc build-essential binutils-doc
+sudo apt-get -y install curl git mc
 
 echo "Apache install"
 sudo apt-get -y install apache2
@@ -44,8 +44,8 @@ echo "mysql-server mysql-server/root_password_again password ${DBPASSWD}" | debc
 echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
 echo "phpmyadmin phpmyadmin/app-password-confirm password ${DBPASSWD}" | debconf-set-selections
 echo "phpmyadmin phpmyadmin/mysql/admin-pass password ${DBPASSWD}" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/mysql/app-pass password ${DBPASSWD}" | debconf-se t-selections
-echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect none" | debconf-se t-selections
+echo "phpmyadmin phpmyadmin/mysql/app-pass password ${DBPASSWD}" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect none" | debconf-set-selections
 sudo apt-get -y install mysql-server mysql-client phpmyadmin
 
 sed -i "s/bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" ${mysql_config_file}
