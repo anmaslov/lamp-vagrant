@@ -9,6 +9,7 @@ php_config_file="/etc/php5/apache2/php.ini"
 xdebug_config_file="/etc/php5/mods-available/xdebug.ini"
 
 mysql_config_file="/etc/mysql/my.cnf"
+DBUSER=vagrant
 DBPASSWD=vagrant
 
 echo "Start install"
@@ -50,8 +51,13 @@ sudo apt-get -y install mysql-server mysql-client phpmyadmin
 
 sed -i "s/bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" ${mysql_config_file}
 
-mysql -uroot -p${DBPASSWD} -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION"
-mysql -uroot -p${DBPASSWD} -e "GRANT PROXY ON ''@'' TO 'root'@'%' WITH GRANT OPTION"
+mysql -uroot -p${DBPASSWD} -e "CREATE DATABASE ${DBNAME}"
+
+mysql -uroot -p${DBPASSWD} -e "CREATE USER '${DBUSER}'@'localhost' IDENTIFIED BY '${DBPASSWD}';
+GRANT ALL PRIVILEGES ON *.* TO '${DBUSER}'@'localhost' WITH GRANT OPTION;
+CREATE USER '${DBUSER}'@'%' IDENTIFIED BY '${DBPASSWD}';
+GRANT ALL PRIVILEGES ON *.* TO '${DBUSER}'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES"
 
 a2enconf phpmyadmin
 
