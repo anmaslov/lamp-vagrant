@@ -1,7 +1,7 @@
 #!/bin/bash
 
 host_document_root="/home/vagrant"
-apache_document_root="/var/www"
+apache_document_root="/var/www/html"
 apache_config_file="/etc/apache2/apache2.conf"
 project_folder_name='public'
 
